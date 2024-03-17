@@ -1,7 +1,10 @@
 <?php
-namespace App\Domain\News\Models;
-use Carbon\CarbonInterface;
+
+namespace App\Domain\Create\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 /**
  * @property int $id
  * @property int $user_id
@@ -10,7 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $added_time
  * @property int $color
  */
-class Create extends Model
+
+class Games extends Model
 {
-    protected $table = 'waiting_games';
+    use HasFactory;
 }
