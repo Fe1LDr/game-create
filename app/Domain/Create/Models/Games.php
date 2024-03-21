@@ -17,4 +17,6 @@ use Illuminate\Database\Eloquent\Model;
 class Games extends Model
 {
     use HasFactory;
+    protected $table = 'games';
+    protected $guarded = []; // false
 }

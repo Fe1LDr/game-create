@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    protected $namespace = 'App\\Http\\ApiV1\\Modules\\Games\\Controllers';
     public function boot(): void
     {
         $this->routes(function () {
