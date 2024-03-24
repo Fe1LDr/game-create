@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'GamesController@index');
 
-Route::get('/games/create/{gamesArr}', 'GamesController@create');
+Route::post('/games/store', 'GamesController@store');
 
-Route::get('/games/get/{game_id}', 'GamesController@get');
+Route::get('/games/show/{id}', 'GamesController@show');
 
-Route::get('/games/delete/{id}', 'GamesController@delete');
+Route::put('/games/update/{id}', 'GamesController@update');
+
+Route::delete('/games/destroy/{id}', 'GamesController@destroy');

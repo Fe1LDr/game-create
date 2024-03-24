@@ -3,46 +3,56 @@
 namespace App\Http\ApiV1\Modules\Games\Controllers;
 
 use App\Domain\Create\Models\Games;
+use App\Http\ApiV1\Modules\Games\Requests\GameRequest;
+use App\Http\ApiV1\Modules\Games\Resources\GameResource;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
 class GamesController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $games = Games::all();
-        foreach ($games as $game) {
-            dump($game);
-        }
-        dd('end');
+        return GameResource::collection(Games::all());
     }
 
-    public function create($game)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(GameRequest $request)
     {
+        $game = Games::create($request->validated());
 
-        $gamesArr2 = [
-            [
-                'id' => '2',
-                'user_id' => '2234',
-                'game_name' => 'agaga',
-                'primary_time' => '10000000',
-                'added_time' => '1000',
-                'color' => '1',
-            ],
-        ];
-        dd($game);
-        Games::create($game);
-        dd('created');
+        return new GameResource($game);
     }
 
-    public function get(int $id)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        return Games::find($id);
+        return new GameResource(Games::findOrFail($id));
     }
 
-    public function delete(int $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(GameRequest $request, Games $game)
     {
-        $game = Games::find($id);
+        $game->update($request->validated());
+
+        return $game;
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Games $game)
+    {
         $game->delete();
-        dd('deleted');
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
