@@ -5,12 +5,10 @@ use App\Http\Web\Controllers\OasController;
 use App\Http\ApiV1\Modules\Games\Controllers\GamesController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'GamesController@index');
+Route::get('/games', 'GamesController@showAll');
 
-Route::post('/games/store', 'GamesController@store');
+Route::post('/games/create', 'GamesController@create');
 
-Route::get('/games/show/{id}', 'GamesController@show');
+Route::put('/games/connect', 'GamesController@connect');
 
-Route::put('/games/update/{id}', 'GamesController@update');
-
-Route::delete('/games/destroy/{id}', 'GamesController@destroy');
+Route::delete('/games/destroy', 'GamesController@destroy');

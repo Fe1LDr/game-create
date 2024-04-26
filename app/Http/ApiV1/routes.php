@@ -9,4 +9,5 @@ Route::get('/', function () {
     return 'aaaaaaaaaaa';
 });
 
-Route::get('/', 'GamesController@create');
+Route::get('/games', 'GamesController@showAll');
+Route::post('/games/create', 'GamesController@create');
