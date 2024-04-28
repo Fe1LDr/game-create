@@ -42,7 +42,7 @@ class GamesController extends Controller
             $authorized = $authorizeAction->execute($validate);
             $game = $gameAction->execute($authorized);
         } catch (Exception $e) {
-            return response()->json($e->getMessage(), 401);
+            return response()->json(['error' => ['message' => $e->getMessage()]], 401);
         }
 
         return new GameResource($game);
@@ -53,18 +53,15 @@ class GamesController extends Controller
      */
     public function connect(
         GameRequest $request,
-        ConnectGameAction $gameAction,
+        ConnectGameAction $connectAction,
         AuthorizeAction $authorizeAction
     ): JsonResponse|\Illuminate\Contracts\Foundation\Application|ResponseFactory|Application|Response {
         try {
             $validate = $request->validated();
             $authorized = $authorizeAction->execute($validate);
-            $error = $gameAction->execute($authorized);
-            if ($error != null) {
-                return response()->json($error->getMessage(), 404);
-            }
+            $connectAction->execute($authorized);
         } catch (Exception $e) {
-            return response()->json($e->getMessage(), 401);
+            return response()->json(['error' => ['message' => $e->getMessage()]], 404);
         }
 
         return response(null, ResponseAlias::HTTP_ACCEPTED);
@@ -85,7 +82,7 @@ class GamesController extends Controller
                 throw new UnauthorizedException("Not a game owner");
             }
         } catch (Exception $e) {
-            return response()->json($e->getMessage(), 400);
+            return response()->json(['error' => ['message' => $e->getMessage()]], 400);
         }
 
         return response(null, ResponseAlias::HTTP_NO_CONTENT);

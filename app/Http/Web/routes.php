@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Web\Controllers\HealthCheck;
-use App\Http\Web\Controllers\OasController;
 use App\Http\ApiV1\Modules\Games\Controllers\GamesController;
 use Illuminate\Support\Facades\Route;
 
