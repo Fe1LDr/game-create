@@ -1,0 +1,83 @@
+GameCreateRequest:
+  type: object
+  properties:
+    username:
+      type: string
+      description: User name
+      example: "user"
+    password:
+      type: string
+      description: Password
+      example: "password"
+    game_name:
+      type: string
+      description: Game name
+      example: "Kizil"
+    player_color:
+      type: string
+      description: Player color
+      example: "white"
+    primary_time:
+      type: integer
+      description: Start time left
+      example: 60000
+    added_time:
+      type: integer
+      description: Added time
+      example: 10000
+
+GameConnectOrDeleteRequest:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: Game id
+      example: 1
+    username:
+      type: string
+      description: User name
+      example: "user"
+    password:
+      type: string
+      description: Password
+      example: "password"
+    game_name:
+      type: string
+      description: Game name
+      example: "Kizil"
+    primary_time:
+      type: integer
+      description: Start time left
+      example: 60000
+    added_time:
+      type: integer
+      description: Added time
+      example: 10000
+
+Game:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: Game ID
+    game_name:
+      type: string
+      description: Game name
+    primary_time:
+      type: integer
+      description: Game primary time
+    added_time:
+      type: integer
+      description: Game added time
+  required:
+    - id
+
+GameResponse:
+  type: object
+  properties:
+    data:
+      $ref: '#/Game'
+    meta:
+      type: object
+  required:
+    - data

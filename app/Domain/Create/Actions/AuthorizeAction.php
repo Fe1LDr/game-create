@@ -17,7 +17,7 @@ class AuthorizeAction
         if ($response->status() == 200) {
             $data["user_id"] = $obj->{'data'}->{'id'};
         } else {
-            throw new UnauthorizedException($obj->{'error'}->{'message'});
+            throw new UnauthorizedException($obj->{'error'}->{'message'}, 401);
         }
 
         return $data;

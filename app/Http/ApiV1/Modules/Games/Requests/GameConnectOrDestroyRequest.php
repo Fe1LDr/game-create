@@ -5,7 +5,7 @@ namespace App\Http\ApiV1\Modules\Games\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class GameRequest extends FormRequest
+class GameConnectOrDestroyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +23,12 @@ class GameRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => 'required',
             'username' => 'required',
             'password' => 'required',
-            'game_name' => 'required|max:127',
-            'player_color' => 'required',
-            'primary_time' => 'required',
-            'added_time' => 'required',
+            'game_name' => 'nullable|max:127',
+            'primary_time' => 'nullable',
+            'added_time' => 'nullable',
         ];
     }
 }

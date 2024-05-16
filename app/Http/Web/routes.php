@@ -7,6 +7,6 @@ Route::get('/games', 'GamesController@showAll');
 
 Route::post('/games/create', 'GamesController@create');
 
-Route::put('/games/connect', 'GamesController@connect');
+Route::post('/games/connect', 'GamesController@connect');
 
-Route::delete('/games/destroy', 'GamesController@destroy');
+Route::post('/games/destroy', 'GamesController@destroy');

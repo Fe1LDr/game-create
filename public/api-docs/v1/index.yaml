@@ -1,42 +1,108 @@
 openapi: 3.0.3
 info:
-  title: Ensi Backend Skeleton (Replace me)
+  title: Games Service
   contact:
     name: API Support
     url: https://ensi.tech/contacts
-    email: mail@greensight.ru
+    email: kizil@mail.com
   version: 1.0.0
-  description: Ensi Backend Skeleton Description (Replace me)
+  description: Games Service
 servers:
-  - url: /api/v1
+  - url: /
 tags:
-  - name: examples
-    description: Тэг-пример
+  - name: games
+    description: Games
 paths:
-  /examples/{id}:
+  /games:
     get:
       tags:
-        - examples
-      operationId: getExample
-      x-lg-handler: 'App\Http\ApiV1\Modules\Foos\Controllers\FoosController@get'
-      x-lg-route-name: 'getExample'
-      x-lg-skip-request-generation: true
-      summary: Получение объекта типа Example
-      description: Получение объекта типа Example
-      parameters:
-        - $ref: '#/components/parameters/PathId'
-        - $ref: '#/components/parameters/QueryInclude'
+        - games
+      operationId: showAllGames
+      x-lg-handler: 'App\Http\ApiV1\Modules\Games\Controllers\GamesController@showAll'
+      summary: Show всех объектов типа Game
+      description: Show всех объектов типа Game
       responses:
-        #"200":
-          #description: Успешный ответ
-          # content:
-          #  application/json:
-          #    schema:
-          #      $ref: './customers.yaml#/CustomerResponse'
+        "200":
+          description: Успешный ответ
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/BadRequest'
         "404":
           $ref: '#/components/responses/NotFound'
         "500":
           $ref: '#/components/responses/ServerError'
+  /games/create:
+    post:
+      tags:
+        - games
+      operationId: createGame
+      x-lg-handler: 'App\Http\ApiV1\Modules\Games\Controllers\GamesController@create'
+      summary: Create объекта типа Game
+      description: Create объекта типа Game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './games/games.yaml#/GameCreateRequest'
+      responses:
+        "201":
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: './games/games.yaml#/GameResponse'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/BadRequest'
+        "500":
+          $ref: '#/components/responses/ServerError'
+  /games/connect:
+    post:
+      tags:
+        - games
+      operationId: connectGame
+      x-lg-handler: 'App\Http\ApiV1\Modules\Games\Controllers\GamesController@connect'
+      summary: Connect to объект типа Game
+      description: Connect to объект типа Game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './games/games.yaml#/GameConnectOrDeleteRequest'
+      responses:
+        "202":
+          description: Успешный ответ
+        "401":
+          $ref: '#/components/responses/BadRequest'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/ServerError'
+  /games/destroy:
+    post:
+      tags:
+        - games
+      operationId: destroyGame
+      x-lg-handler: 'App\Http\ApiV1\Modules\Games\Controllers\GamesController@destroy'
+      summary: Destroy объекта типа Game
+      description: Destroy объекта типа Game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './games/games.yaml#/GameConnectOrDeleteRequest'
+      responses:
+        "204":
+          description: Успешный ответ
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/ServerError'
+
 components:
   parameters:
     QueryInclude:
@@ -53,7 +119,7 @@ components:
         meta:
           type: object
       required:
-          - data
+        - data
     PaginationTypeEnum:
       $ref: './common_schemas.yaml#/PaginationTypeEnum'
   responses:
