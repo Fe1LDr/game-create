@@ -20,7 +20,7 @@ class ConnectGameAction
             $game->player_white = $data['user_id'];
         }
         $game->primary_time = Game::where('id', $data['id'])->get('primary_time');
-        $response = http::post("http://127.0.0.3:8000/manage/start", $game);
+        $response = http::post("http://manage-nginx/manage/start", $game);
         $game->delete();
 
         return null;

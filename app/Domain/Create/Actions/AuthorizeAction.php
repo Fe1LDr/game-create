@@ -9,7 +9,7 @@ class AuthorizeAction
 {
     public function execute(array $data): \Exception|array
     {
-        $response = http::post("http://127.0.0.1:8000/user/auth", [
+        $response = http::post("http://users-nginx/user/auth", [
             "username" => $data['username'],
             "password" => $data['password'],
             ]);

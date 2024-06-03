@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www/
+      - ./nginx/conf.d/:/etc/nginx/conf.d
+    ports:
+      - "8001:80"
+    depends_on:
+      - app
+    networks:
+      - intelector
+    container_name: games-nginx
+
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/var/www/
+    depends_on:
+      - db
+    networks:
+      - intelector
+    container_name: games
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: game_create
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: miet
+    ports:
+      - "8202:5432"
+    networks:
+      - intelector
+    container_name: games-db
+
+networks:
+  intelector:
+    external: true

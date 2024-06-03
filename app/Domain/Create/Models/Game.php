@@ -2,6 +2,7 @@
 
 namespace App\Domain\Create\Models;
 
+use Database\Factories\Domain\Create\Models\GameFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,4 +20,9 @@ class Game extends Model
     use HasFactory;
     protected $table = 'games';
     protected $guarded = []; // false
+
+    protected static function newFactory(): GameFactory
+    {
+        return GameFactory::new();
+    }
 }

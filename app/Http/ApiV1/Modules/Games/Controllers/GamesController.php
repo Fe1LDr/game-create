@@ -10,11 +10,8 @@ use App\Http\ApiV1\Modules\Games\Requests\GameConnectOrDestroyRequest;
 use App\Http\ApiV1\Modules\Games\Requests\GameRequest;
 use App\Http\ApiV1\Modules\Games\Resources\GameResource;
 use Exception;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Validation\UnauthorizedException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -30,7 +27,7 @@ class GamesController extends Controller
         try {
             return GameResource::collection(Game::all());
         } catch (Exception $e) {
-            return response()->json(['errors' => [['code' => "401", 'message' => $e->getMessage()]]], 404);
+            return response()->json(['errors' => [['code' => strval($e->getCode()), 'message' => $e->getMessage()]]], $e->getCode());
         }
     }
 
@@ -44,7 +41,8 @@ class GamesController extends Controller
             $authorized = $authorizeAction->execute($validate);
             $game = $gameAction->execute($authorized);
         } catch (Exception $e) {
-            return response()->json(['data' => [], 'errors' => [['code' => "401", 'message' => $e->getMessage()]]], 401);
+            echo($e->getMessage());
+            return response()->json(['data' => [], 'errors' => [['code' => strval($e->getCode()), 'message' => $e->getMessage()]]], $e->getCode());
         }
 
         return new GameResource($game);
@@ -57,22 +55,23 @@ class GamesController extends Controller
         GameConnectOrDestroyRequest $request,
         ConnectGameAction $connectAction,
         AuthorizeAction $authorizeAction
-    ): JsonResponse|\Illuminate\Contracts\Foundation\Application|ResponseFactory|Application|Response {
+    ): JsonResponse {
         try {
             $validate = $request->validated();
             $authorized = $authorizeAction->execute($validate);
             $connectAction->execute($authorized);
         } catch (Exception $e) {
-            return response()->json(['data' => [], 'errors' => [['code' => $e->getCode(), 'message' => $e->getMessage()]]], $e->getCode());
+            echo($e->getMessage());
+            return response()->json(['data' => [], 'errors' => [['code' => strval($e->getCode()), 'message' => $e->getMessage()]]], $e->getCode());
         }
 
-        return response(null, ResponseAlias::HTTP_ACCEPTED);
+        return response()->json(null, ResponseAlias::HTTP_ACCEPTED);
     }
 
     /**
      * Delete the game.
      */
-    public function destroy(GameConnectOrDestroyRequest $request, AuthorizeAction $authorizeAction): JsonResponse|\Illuminate\Contracts\Foundation\Application|ResponseFactory|Application|Response
+    public function destroy(GameConnectOrDestroyRequest $request, AuthorizeAction $authorizeAction): JsonResponse
     {
         try {
             $validate = $request->validated();
@@ -87,9 +86,10 @@ class GamesController extends Controller
                 throw new UnauthorizedException("Not a game owner", 401);
             }
         } catch (Exception $e) {
-            return response()->json(['data' => [], 'errors' => [['code' => $e->getCode(), 'message' => $e->getMessage()]]], $e->getCode());
+            echo($e->getMessage());
+            return response()->json(['data' => [], 'errors' => [['code' => strval($e->getCode()), 'message' => $e->getMessage()]]], $e->getCode());
         }
 
-        return response(null, ResponseAlias::HTTP_NO_CONTENT);
+        return response()->json(null, ResponseAlias::HTTP_NO_CONTENT);
     }
 }
